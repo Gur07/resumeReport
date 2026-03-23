@@ -52,7 +52,6 @@ coverage/
 *.db
 
 # AI/ML models and data (if any)
-models/
 data/
 *.pkl
 *.h5
