@@ -25,7 +25,7 @@ async function register(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await userModel.create({ username, email, password: hashedPassword });
         const token = JWT.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
+        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' });
         res.status(201).json({
             success: true,
             message: "User registered successfully",
@@ -60,7 +60,7 @@ async function login(req, res) {
     }
 
     const token = JWT.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' });
 
     res.status(200).json({
         success: true,
