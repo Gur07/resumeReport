@@ -44,7 +44,7 @@ const Home = () => {
         setTimeout(() => {
             setResumeFilename(file.name)
             setIsUploading(false)
-        }, 500)
+        }, 2000)
     }
 
     const hasResume = Boolean(resumeFilename)
