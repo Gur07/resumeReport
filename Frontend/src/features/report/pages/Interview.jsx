@@ -67,6 +67,14 @@ const Interview = () => {
             getReportById(interviewId)
         }
     }, [ interviewId ])
+
+    useEffect(() => {
+        if (report?.title) {
+            document.title = `${report.title} | Resume Report`
+        } else if (!loading) {
+            document.title = "Interview Plan | Resume Report"
+        }
+    }, [report, loading])
     // console.log(report)
 
 

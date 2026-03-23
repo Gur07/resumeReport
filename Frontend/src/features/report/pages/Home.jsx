@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
@@ -13,6 +13,10 @@ const Home = () => {
     const [isUploading, setIsUploading] = useState(false)
     const resumeInputRef = useRef()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        document.title = "Create Interview Plan | Resume Report"
+    }, [])
 
     const handleLogout = async () => {
         await logout();
