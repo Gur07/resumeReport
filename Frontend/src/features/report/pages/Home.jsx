@@ -10,6 +10,7 @@ const Home = () => {
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
     const [resumeFilename, setResumeFilename] = useState("")
+    const [isUploading, setIsUploading] = useState(false)
     const resumeInputRef = useRef()
     const navigate = useNavigate()
 
@@ -28,10 +29,18 @@ const Home = () => {
         const file = e.target.files?.[0];
         if (!file) {
             setResumeFilename('')
+            setIsUploading(false)
             return
         }
 
-        setResumeFilename(file.name)
+        // Start upload state
+        setIsUploading(true)
+        
+        // Add delay to allow proper file processing (500ms)
+        setTimeout(() => {
+            setResumeFilename(file.name)
+            setIsUploading(false)
+        }, 500)
     }
 
     const hasResume = Boolean(resumeFilename)
@@ -39,7 +48,7 @@ const Home = () => {
     if (loading) {
         return (
             <main className='loading-screen'>
-                <h1>Loading your interview plan...</h1>
+                <h1>Loading...</h1>
             </main>
         )
     }
@@ -101,7 +110,12 @@ const Home = () => {
                             </label>
                             <label className={`dropzone ${hasResume ? 'dropzone--uploaded' : ''}`} htmlFor='resume'>
                                 <span className='dropzone__icon'>
-                                    {hasResume ? (
+                                    {isUploading ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <polyline points="12 6 12 12 16 14" />
+                                        </svg>
+                                    ) : hasResume ? (
                                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                             <polyline points="20 6 9 17 4 12" />
                                         </svg>
@@ -113,9 +127,9 @@ const Home = () => {
                                         </svg>
                                     )}
                                 </span>
-                                <p className='dropzone__title'>Click to upload or drag &amp; drop</p>
-                                <p className='dropzone__subtitle'>PDF or DOCX (Max 5MB)</p>
-                                <input ref={resumeInputRef} hidden type='file' id='resume' name='resume' accept='.pdf,.docx' onChange={handleFileChange}/>
+                                <p className='dropzone__title'>{isUploading ? 'Uploading...' : 'Click to upload or drag & drop'}</p>
+                                <p className='dropzone__subtitle'>{isUploading ? 'Please wait...' : 'PDF or DOCX (Max 5MB)'}</p>
+                                <input ref={resumeInputRef} hidden type='file' id='resume' name='resume' accept='.pdf,.docx' onChange={handleFileChange} disabled={isUploading}/>
                             </label>
                             {hasResume && (
                                 <div className='resume-uploaded'>
@@ -154,9 +168,10 @@ const Home = () => {
                     <span className='footer-info'>AI-Powered Strategy Generation &bull; Approx 30s</span>
                     <button
                         onClick={handleGenerateReport}
+                        disabled={loading || isUploading}
                         className='generate-btn'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" /></svg>
-                        Generate My Interview Strategy
+                        {loading || isUploading ? 'Processing...' : 'Generate My Interview Strategy'}
                     </button>
                 </div>
             </div>
