@@ -1,0 +1,18 @@
+token blacklisting --> helps in logout (reddis) -> makes sure that the token is not used by hacker 
+
+
+4 layer architecture of react
+
+UI
+components
+pages
+
+HOOK
+hooks
+
+STATE
+auth.context.jsx
+ai.context.jsx
+
+API
+services

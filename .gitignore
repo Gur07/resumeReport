@@ -1,0 +1,74 @@
+# Env files
+.env
+.env.*
+Frontend/.env
+Backend/.env
+
+# Node modules
+Frontend/node_modules/
+Backend/node_modules/
+
+# Build files
+Frontend/build/
+Frontend/dist/
+Backend/dist/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary folders
+tmp/
+temp/
+
+# Coverage and test files
+coverage/
+*.lcov
+.nyc_output
+
+# Cache directories
+.cache/
+.parcel-cache
+.npm
+.eslintcache
+
+# Database files
+*.sqlite
+*.db
+
+# AI/ML models and data (if any)
+models/
+data/
+*.pkl
+*.h5
+*.pb
+
+# Python (if any future additions)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
