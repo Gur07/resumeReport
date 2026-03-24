@@ -32,9 +32,8 @@ const model = new ChatGoogle({ model: "gemini-2.5-flash", apiKey:process.env.GOO
 
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
-
-
-    const prompt = `
+    try {
+        const prompt = `
     You are an AI that ONLY returns valid JSON.
 
     Generate an interview report for the given data.
@@ -46,12 +45,14 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     Job Description: ${jobDescription}
     `
 
-    const result = await model.invoke(prompt);
-    console.log(result)
+        const result = await model.invoke(prompt);
+        console.log(result)
 
-    return result;
-
-
+        return result;
+    } catch (error) {
+        console.error('Error generating interview report:', error);
+        throw error;
+    }
 }
 
 

@@ -11,6 +11,7 @@ const Home = () => {
     const [ selfDescription, setSelfDescription ] = useState("")
     const [resumeFilename, setResumeFilename] = useState("")
     const [isUploading, setIsUploading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
     const resumeInputRef = useRef()
     const navigate = useNavigate()
 
@@ -20,9 +21,15 @@ const Home = () => {
     }
 
     const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[ 0 ]
-        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/${data._id}`)
+        try {
+            setErrorMessage("")
+            const resumeFile = resumeInputRef.current.files[ 0 ]
+            const data = await generateReport({ jobDescription, selfDescription, resumeFile })
+            navigate(`/${data._id}`)
+        } catch (error) {
+            console.error('Error generating report:', error)
+            setErrorMessage("Failed to generate interview report. Please try again.")
+        }
     }
 
     const handleFileChange = (e) => {
@@ -67,6 +74,12 @@ const Home = () => {
                     Logout
                 </button>
             </header>
+
+            {errorMessage && (
+                <div className='error-message'>
+                    {errorMessage}
+                </div>
+            )}
 
             {/* Main Card */}
             <div className='interview-card'>
