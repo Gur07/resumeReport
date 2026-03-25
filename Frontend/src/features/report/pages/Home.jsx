@@ -2,6 +2,7 @@ import React, { useState, useRef,useEffect } from 'react'
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
 import { logout } from '../../auth/services/auth.api.js'
+import { handleLogout } from '../../auth/hooks/useAuth.js'
 
 const Home = () => {
 
@@ -19,7 +20,7 @@ const Home = () => {
     }, [])
 
     const handleLogout = async () => {
-        await logout();
+        await handleLogout();
         navigate('/login');
     }
 
