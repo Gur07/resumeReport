@@ -3,6 +3,14 @@ const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
 const tokenBlacklistModel = require("../models/blacklist.model")
 
+const AUTH_COOKIE_NAME = "token";
+const AUTH_COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    path: "/"
+};
+
 async function register(req, res) {
     const { username, email, password } = req.body;
 
@@ -25,7 +33,7 @@ async function register(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = await userModel.create({ username, email, password: hashedPassword });
         const token = JWT.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' });
+        res.cookie(AUTH_COOKIE_NAME, token, AUTH_COOKIE_OPTIONS);
         res.status(201).json({
             success: true,
             message: "User registered successfully",
@@ -60,7 +68,7 @@ async function login(req, res) {
     }
 
     const token = JWT.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None' });
+    res.cookie(AUTH_COOKIE_NAME, token, AUTH_COOKIE_OPTIONS);
 
     res.status(200).json({
         success: true,
@@ -79,13 +87,13 @@ async function getMe(req, res) {
 }
 
 async function logout(req, res) {
-    const token = req.cookies.token
+    const token = req.cookies?.[AUTH_COOKIE_NAME]
 
     if (token) {
         await tokenBlacklistModel.create({ token })
     }
 
-    res.clearCookie("token")
+    res.clearCookie(AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS)
 
     res.status(200).json({
         message: "User logged out successfully"
