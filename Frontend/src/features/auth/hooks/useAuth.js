@@ -38,6 +38,7 @@ export const useAuth = () => {
             const data = await logout()
             setUser(null)
         } catch (err) {
+            throw err;
         } finally {
             setLoading(false)
         }
